@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>体验vue</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .box{
+            width: 300px;
+            height: 300px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        
+    </div>
+
+    <script> 
+        const vm = new Vue({
+            el: '#app',
+            template: `
+            <div id="app">
+                <div v-for="item in Array(100000)" class="box" v-if="isShow"></div>
+            </div>
+            `,
+            data: {
+                title: '我的第一个vue应用',
+                content: '这是内容部分',
+                isShow: false
+            }
+        })
+    </script>
+
+    
+    
+</body>
+</html>

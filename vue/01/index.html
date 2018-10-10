@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>体验vue</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        
+    </div>
+
+    <script> 
+        const vm = new Vue({
+            el: '#app',
+            template: `
+            <div id="app">
+                <h1>{{ title }}</h1>
+                <p>{{ content }}</p>
+                <p>{{ content }}</p>
+                新闻列表
+                <ul>
+                    <li v-for="user in users"> 
+                        {{user.name}} {{user.age}}
+                        <ul>
+                            <li v-for="child in user.children">
+                                {{child.name}} {{child.age}}
+                                <ul>
+                                    <li v-for="child2 in child.children">
+                                        {{child2.name}} {{child2.age}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            `,
+            data: {
+                title: '我的第一个vue应用',
+                content: '这是内容部分',
+                users: [{
+                    name: '张三',
+                    age: 20,
+                    children:[
+                        {
+                            name: '小小张',
+                            age: 2,
+                            children:[
+                                {
+                                    name: '小小张',
+                                    age: 2
+                                },
+                                {
+                                    name: '小小李',
+                                    age: 3
+                                }
+                            ]
+                        },
+                        {
+                            name: '小小李',
+                            age: 3,
+                            children:[
+                                {
+                                    name: '小小张',
+                                    age: 2
+                                },
+                                {
+                                    name: '小小李',
+                                    age: 3
+                                }
+                            ]
+                        }
+                    ]
+                },{
+                    name: '小明',
+                    age: 22
+                },{
+                    name: '小王',
+                    age: 23
+                },{
+                    name: '小李',
+                    age: 20
+                }]
+            }
+        })
+    // mvc
+    // mvvm
+    // mv*
+
+    // m Model 数据
+    // v View  视图层
+    // c controller 控制器
+    // vm ViewModel数据和视图 绑定在一块 Vue 就是一个vm框架
+    </script>
+
+    
+    
+</body>
+</html>

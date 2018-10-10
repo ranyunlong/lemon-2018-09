@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>拦截器</title>
+</head>
+<body>
+    <div id="app">
+    </div>
+    <script>
+        // 脏检查
+        // var a = 100
+        // var _a = a
+        // setInterval(() => {
+        //     if(a !== _a) {
+        //         console.log('a变量发生变化了')
+        //         _a = a
+        //     }
+        //     console.log('检查中')
+        // },100)
+
+        var o = {
+            _a: 50,
+            get a() {
+                document.getElementById('app').innerHTML = this._a
+                return this._a
+            },
+            set a(val) {
+                document.getElementById('app').innerHTML = val
+                this._a = val
+            },
+            b: 100
+        }
+
+        var obj = {}
+        Object.defineProperty(obj,'a', {
+            get() {
+
+            },
+            set () {
+
+            }
+        })
+    </script>
+</body>
+</html>
