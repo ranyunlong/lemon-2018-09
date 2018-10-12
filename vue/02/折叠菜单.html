@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .menu {
+            width: 320px;
+            border: 1px solid #000;
+            list-style: none;
+            padding: 0;
+            border-bottom: none;
+        }
+        .menu li {
+            border-bottom: 1px solid #000;
+            cursor: pointer;
+        }
+
+        .menu li .label {
+            padding-left: 10px;
+            height: 35px;
+            line-height: 35px;
+            background: orangered;
+        }
+
+        .menu li .child {
+            padding: 0;
+            list-style: none;
+        }
+
+        .menu li .child>li {
+            height: 30px;
+            line-height: 30px;
+            border-bottom: none;
+            border-top: 1px solid #000;
+        }
+
+        .menu li .child>li .label{
+            padding-left: 20px;
+            background: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul class="menu">
+            <li v-for="item in menu">
+                <div class="label" v-on:click="show(item)">
+                    {{item.label}}
+                </div>
+                <ul class="child" v-show="item.show">
+                    <li v-for="child in item.children">
+                        <div class="label">
+                            {{child.label}}
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            methods: {
+                show(item) {
+                    item.show = !item.show
+                    this.menu.forEach( val => {
+                        if (item !== val) {
+                            val.show = false
+                        }
+                    });
+                }
+            },
+            data: {
+                menu: [
+                    {
+                        label: '分组1',
+                        show: true,
+                        children: [
+                            {
+                                label: '项目1'
+                            },
+                            {
+                                label: '项目2'
+                            }
+                        ]
+                    },
+                    {
+                        label: '分组2',
+                        show: false,
+                        children: [
+                            {
+                                label: '项目1'
+                            },
+                            {
+                                label: '项目2'
+                            }
+                        ]
+                    },
+                    {
+                        label: '分组3',
+                        show: false
+                    },
+                    {
+                        label: '分组4',
+                        show: false,
+                    },
+                    {
+                        label: '分组5',
+                        show: false,
+                        children: [
+                            {
+                                label: '项目1'
+                            },
+                            {
+                                label: '项目2'
+                            }
+                        ]
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

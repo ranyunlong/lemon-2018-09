@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+    <style>
+        #app{
+            width: 100vw;
+            height: 100vh;
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-bind:style="{
+        background: 'rgba(0,0,0,' + (range / 100) +')'
+    }">
+        <input type="range" v-model="range">
+        <input type="color" v-model="color" />
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                color: '#fff',
+                range: 100
+            }
+        })
+    </script>
+</body>
+</html>

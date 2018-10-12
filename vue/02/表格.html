@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <table>
+            <thead>
+                <th>id</th>
+                <th>用户名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <tr v-for="(user, index) in users">
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.sex}}</td>
+                    <td>{{user.age}}</td>
+                    <td>
+                        <button v-on:click="deleteUser(index)">删除</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="form">
+            <div class="item">
+               姓名: <input v-model="form.name" type="text">
+            </div>
+            <div class="item">
+               性别: 
+               男<input v-model="form.sex" value="男" type="radio">
+               女<input v-model="form.sex" value="女" type="radio">
+               保密<input v-model="form.sex" value="保密" type="radio">
+            </div>
+            <div class="item">
+               年龄: <input v-model="form.age" type="text">
+            </div>
+            <div class="item">
+                <button v-on:click="getUser">提交</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            methods: {
+                deleteUser(i) {
+                    this.users.splice(i, 1)
+                },
+                getUser() {
+                    // console.log(this.form)
+                    if (this.form.name && this.form.age) {
+                        this.form.id = this.users.length + 1
+                        this.users.push({
+                            id: this.users.length + 1,
+                            name: this.form.name,
+                            age: this.form.age,
+                            sex: this.form.sex
+                        })
+                        this.form.name = ''
+                        this.form.age  = ''
+                        this.form.sex = '保密'
+                    } else {
+                        alert('请输入用户名和年龄')
+                    }
+                }
+            },
+            data: {
+                form: {
+                    name: '',
+                    age: '',
+                    sex: '保密'
+                },
+                users: [
+                    {
+                        id: 1,
+                        name: '张三',
+                        sex: '男',
+                        age: 22
+                    },
+                    {
+                        id: 2,
+                        name: '李四',
+                        sex: '男',
+                        age: 20
+                    },
+                    {
+                        id:3,
+                        name: '小明',
+                        sex: '男',
+                        age: 21
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

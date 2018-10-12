@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .box{
+            width: 300px;
+            height: 300px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="box"  v-on:click="click(1,$event,2,3)"></div>
+    </div>
+    <script>
+        /*
+         * vue 绑定的事件 如果后面不跟括号的情况下
+         * 默认会将当前所触发的事件对象传递到函数中
+         */
+        const vm = new Vue({
+            el: '#app',
+            data: { // 实例的数据 实例的属性
+                title: '呵呵'
+            },
+            methods: { // 给当前vue实例添加方法的
+                click(e,f,g,d) {
+                    console.log(e,f,g,d)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

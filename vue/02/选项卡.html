@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .tab{
+            width:  700px;
+            height: 350px;
+            border: 1px solid #000;
+        }
+        .tab .header{ 
+            height: 40px;
+            border-bottom: 1px solid #000;
+            display: flex;
+        }
+
+        .tab .header .item {
+            height: 40px;
+            line-height: 40px;
+            padding: 0 10px;
+            border-right: 1px solid #000;
+            cursor: pointer;
+        }
+
+        .tab .header .item.active{
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="tab">
+            <div class="header">
+                <div 
+                    class="item"
+                    v-for="(item, index) in tab"
+                    @click="selectIndex = index"
+                    :class="{
+                        active: index === selectIndex
+                    }"
+                    >
+                    {{item.name}}
+                    <button @click="close($event,index)">关闭</button>
+                </div>
+            </div>
+            <div class="main">
+                <div 
+                    class="content"
+                    v-for="(item, index) in tab"
+                    v-show="selectIndex === index"
+                    >
+                    {{item.content}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // v-bind 可以使用 冒号 代替
+        // v-on: 可以使用 @符号代替
+        new Vue({
+            el: '#app',
+            methods: {
+                close(event,index) {
+                    event.stopPropagation()
+                    this.tab.splice(index, 1)
+                }
+            },
+            data: {
+                selectIndex: 0,
+                tab: [
+                    {
+                        name: '项目1',
+                        content: '项目1的内容'
+                    },
+                    {
+                        name: '项目2',
+                        content: '项目2的内容'
+                    },
+                    {
+                        name: '项目3',
+                        content: '项目3的内容'
+                    },
+                    {
+                        name: '项目4',
+                        content: '项目4的内容'
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
+</html>
