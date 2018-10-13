@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input 
+            type="text"
+            v-model="ipt">
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                ipt: ''
+            },
+            watch: {
+                // 通过watch 选项 添加data里的变量的同名方法就可以
+                // 监听变量的变化
+                ipt(newVal, oldVal) { 
+                    console.log('变量ipt发生变化了', newVal, oldVal )
+                }
+            }
+        })
+    </script>
+</body>
+</html>

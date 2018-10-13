@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="item in list">{{item}}</li>
+        </ul>
+        {{obj.title}}
+        {{obj.title2}}
+
+        <button @click="push">添加哈哈</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                list: [1,2,3,4],
+                obj: {
+                    title: '呵呵'
+                }
+            },
+            methods: {
+                push() {
+                    // this.obj.title2 = '哈哈'
+                    this.$set(this.obj, 'title2', '哈哈')
+                }
+            }
+        })
+
+        // push()
+        // pop()
+        // shift()
+        // unshift()
+        // splice()
+        // sort()
+        // reverse()
+        // 使用以上数组的变异方法才会触发vue的模板的更新
+        // 使用以上数组的变异方法vue的变量是响应式数据
+        
+        // 使用下标去更新数组, 数据将不在是响应式的
+        // vm.list[4] = 5
+        // 将下标添加的数据转换成响应式数据
+        // set(要操作的对象, 对象的key, 对象的val)
+        // vm.$set(vm.list, 4, 5)
+        // Vue.set(vm.list, 5, 6)
+
+        // 在原始data 生产好的响应式数据里新增数据必须通过set方法来新增
+        // Vue.set(vm.obj, 'title2', '哈哈')
+
+        // console.log(vm)
+    </script>
+</body>
+</html>
