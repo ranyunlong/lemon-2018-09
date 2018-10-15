@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>穿梭框效果</title>
+    <script src="js/vue.js"></script>
+    <style>
+        #app {
+            display: flex;
+            width: 700px;
+            justify-content: space-between;
+        }
+        .btn {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+        .box{
+            width: 300px;
+            height: 300px;
+            overflow: auto;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="box">
+            <div 
+                v-for="(item, index) in arr1"
+                >
+                <input v-model="item.isChecked" type="checkbox"> {{item.value}}
+            </div>
+        </div>
+        <div class="btn">
+            <button @click="moveLeft" :disabled="cptArr2.length === 0"><<</button>
+            <button @click="moveRight" :disabled="cptArr1.length === 0">>></button>
+        </div>
+        <div class="box">
+                <div 
+                v-for="(item, index) in arr2"
+                >
+                <input v-model="item.isChecked" type="checkbox">{{item.value}}
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                arr1: [
+                    {
+                        isChecked: false,
+                        value: 1
+                    },
+                    {
+                        isChecked: false,
+                        value: 2
+                    },
+                    {
+                        isChecked: false,
+                        value: 3
+                    },
+                    {
+                        isChecked: false,
+                        value: 4
+                    },
+                    {
+                        isChecked: false,
+                        value: 5
+                    }
+                ],
+                arr2: [ {
+                        isChecked: false,
+                        value: 6
+                    },
+                    {
+                        isChecked: false,
+                        value: 7
+                    },
+                    {
+                        isChecked: false,
+                        value: 8
+                    },
+                    {
+                        isChecked: false,
+                        value: 9
+                    },
+                    {
+                        isChecked: false,
+                        value: 0
+                    }]
+            },
+            computed: {
+                cptArr1() { // 计算arr1里是否有选中的数据
+                    return this.arr1.filter(k => {
+                        return k.isChecked
+                    })
+                },
+                cptArr2() { // 计算arr2里是否有选中的数据
+                    return this.arr2.filter(k => {
+                        return k.isChecked
+                    })
+                }
+            },
+            methods: {
+                moveRight() {
+                    // console.log(this.cptArr1)
+                    // 保留截取出来的数据
+                    const origin = JSON.parse(JSON.stringify(this.cptArr1))
+
+                    // 获取没有勾上的选项 保留起来
+                    this.arr1 = this.arr1.filter((k) => {
+                        return k.isChecked === false
+                    })
+
+                    // this.arr2.push(...origin)
+                    origin.forEach(k => {
+                        k.isChecked = false
+                        this.arr2.push(k)
+                    })
+                },
+                moveLeft() {
+                    // console.log(this.cptArr1)
+                    // 保留截取出来的数据
+                    const origin = JSON.parse(JSON.stringify(this.cptArr2))
+                    this.arr2 = this.arr2.filter((k) => {
+                        return k.isChecked === false
+                    })
+
+                    // this.arr2.push(...origin)
+                    origin.forEach(k => {
+                        k.isChecked = false
+                        this.arr1.push(k)
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .banner{
+            width: 800px;
+            height: 300px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            /* position: relative; */
+        }
+        .item {
+            width: 100%;
+            height: 100%;
+            /* position: absolute; */
+        }
+
+        .item:nth-child(1) {
+            background: red;
+        }
+
+        .item:nth-child(2) {
+            background: blue;
+        }
+
+        .item:nth-child(3) {
+            background: yellow;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="banner">
+            <div 
+                class="item"
+                v-for="(item, index) in banners"
+                v-show="showIndex === index"
+                >
+                <img :src="item" :a="index">
+            </div>
+        </div>
+        <button @click="prev">上一张</button>
+        <button @click="next">下一张</button>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                banners: [
+                    'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2691817444,1083757481&fm=26&gp=0.jpg',
+                    'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1118565326,2256360130&fm=26&gp=0.jpg',
+                    'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2181994882,3624535159&fm=26&gp=0.jpg'
+                ],
+                showIndex: 0
+            },
+            watch: {
+                showIndex(val) {
+                    if (val > this.banners.length - 1) {
+                        this.showIndex = 0
+                    } else if (val < 0) {
+                        this.showIndex = this.banners.length - 1
+                    }
+                }
+            },
+            methods: {
+                prev() {
+                    this.showIndex--;
+                },
+                next() {
+                    this.showIndex++;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
