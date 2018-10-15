@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件基础</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" >
+    <script src="js/vue.js"></script>
+    <style>
+        .card{
+            width: 300px;
+            height: 300px;
+            border: 1px solid #000;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <btn-group :data="['bei','jing']" ></btn-group>
+        <Btn-Group :data="['bei','jing']"></Btn-Group>
+    </div>
+
+    <!-- 默认使用html属性传递的参数是字符串的数据 -->
+    <!-- 如果在一个html属性之前加上v-bind作为组件参数传递的话 那么该值以变量的方式传递 -->
+    <!-- 在组件的内部只能使用 使用组件实例的东西 -->
+    <script>
+        // 组件分为两种组件
+        // 1. 全局组件 Vue.component('组件的名称' = string, 组件的选项 = {})
+        Vue.component('BtnGroup', {
+            props:['data'], // props选项用于接收 组件标签上以html属性的方式传递的参数 
+            template: `
+            <div class="btn-group">
+                <button 
+                    type="button" 
+                    v-for="item in data"
+                    @click="click(item)"
+                    class="btn btn-default">
+                    {{item}}
+                </button>
+            </div>
+            `,
+            data() { // 在组件里的data选项和实例中的不一样 必须是一个函数
+                return {
+                    citys: ['北京', '重庆', '上海', '天津']
+                }
+            },
+            methods: {
+                click(city) {
+                    // 用它来触发 组件标签上的事件
+                    // $emit方法默认必须有一个参数， 就是要激活的组件标签上已监听的事件名称
+                    // 第二个参数是可选 给组件标签上的事件处理函数传递参数的
+                    this.$emit('aa', city)
+                }
+            },
+            computed: { // computed 里的选项名称不能和data里的重复
+                citysCopy() {
+                    return this.citys.filter(k=>{
+                        return k !== '重庆'
+                    })
+                }
+            }
+        })
+
+
+        // 2. 局部组件
+
+        // Vue实例 和 组件是两个单独的东西
+        // 在template 选项里只能有一个根元素
+        // 组件不是一个html元素，也就是组件上默认是不能监听html事件的
+        // 在组件内部 使用emit 方法触发 组件标签上监听的事件
+        // 1. 组件上监听的事件默认是不会被触发的
+        // 2. 组件上监听的事件必须由内部的真实html所监听的事件 使用$emit来触发
+
+
+        // 组件默认是不能嵌套的，要想让组件可以嵌套标签那么你需要使用<slot></slot>来分发内容
+        // 把你嵌套的标签分发到需要的地方
+        Vue.component('card', {
+            template: `
+                <div class="card">
+                    <div>呵呵</div>
+                    <slot></slot>
+                </div>
+            `
+        })
+
+        // 组件的名称可以支持驼峰的命名方式
+
+        // 如果我的组件名称是以大驼峰的命名方式（最牛的）
+        // 可以直接在使用时使用大驼峰标签 <BtnGroup /> <btnGroup /> <btn-group /> <BtnGroup></BtnGroup>
+        // 而且 还可以使用烤串命名方式
+
+        // 如果组件使用的是以小驼峰的方式命名（第二）
+        // 那么你在使用的时候只能使用小驼峰名称<btnGroup /> 和 烤串命名<btn-group />
+
+        // 如果组件上使用的是烤串命名 <btn-group /> （最low）
+        // 只能 <btn-group /> 这样使用
+
+        new Vue({
+            el: '#app',
+            data: {
+                btns1: ['北京','天津'],
+                title:'哈哈'
+            },
+            methods: {
+                run(n) {
+                    console.log('run方法执行了', n)
+                }
+            },
+            // 在vue的temlate选项里使用组件的时候 可以使用大驼峰小驼峰和烤串
+            // template: ` 
+            //     <div class="app">
+            //         <btnGroup @aa="run" :data="btns1" />
+            //         <btn-group :data="btns1" />
+            //         <card>
+            //             <h1>标题</h1>
+            //         </card>
+            //     </div>
+            // `
+        })
+        // 选择使用组件这种方式 目的就是为了 复用、可维护性也增加了
+    </script>
+</body>
+</html>
