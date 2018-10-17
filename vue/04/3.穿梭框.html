@@ -27,29 +27,88 @@
     </style>
 </head>
 <body>
-    <div id="app">
-        <div class="box">
-            <div 
-                v-for="(item, index) in arr1"
-                >
-                <input v-model="item.isChecked" type="checkbox"> {{item.value}}
-            </div>
-        </div>
-        <div class="btn">
-            <button @click="moveLeft" :disabled="cptArr2.length === 0"><<</button>
-            <button @click="moveRight" :disabled="cptArr1.length === 0">>></button>
-        </div>
-        <div class="box">
-                <div 
-                v-for="(item, index) in arr2"
-                >
-                <input v-model="item.isChecked" type="checkbox">{{item.value}}
-            </div>
-        </div>
-    </div>
+    <div id="app"></div>
     <script>
+        Vue.component('Box', {
+            props:['data'],
+            data() {
+                return {
+                    arr1: this.data[0],
+                    arr2: this.data[1]
+                }
+            },
+            template: `
+                <div id="app">
+                    <div class="box">
+                        <div 
+                            v-for="(item, index) in arr1"
+                            >
+                            <input v-model="item.isChecked" type="checkbox"> {{item.value}}
+                        </div>
+                    </div>
+                    <div class="btn">
+                        <button @click="moveLeft" :disabled="cptArr2.length === 0"><<</button>
+                        <button @click="moveRight" :disabled="cptArr1.length === 0">>></button>
+                    </div>
+                    <div class="box">
+                            <div 
+                            v-for="(item, index) in arr2"
+                            >
+                            <input v-model="item.isChecked" type="checkbox">{{item.value}}
+                        </div>
+                    </div>
+                </div>
+            `,
+            computed: {
+                cptArr1() { // 计算arr1里是否有选中的数据
+                    return this.arr1.filter(k => {
+                        return k.isChecked
+                    })
+                },
+                cptArr2() { // 计算arr2里是否有选中的数据
+                    return this.arr2.filter(k => {
+                        return k.isChecked
+                    })
+                }
+            },
+            methods: {
+                moveRight() {
+                    // console.log(this.cptArr1)
+                    // 保留截取出来的数据
+                    const origin = JSON.parse(JSON.stringify(this.cptArr1))
+
+                    // 获取没有勾上的选项 保留起来
+                    this.arr1 = this.arr1.filter((k) => {
+                        return k.isChecked === false
+                    })
+
+                    // this.arr2.push(...origin)
+                    origin.forEach(k => {
+                        k.isChecked = false
+                        this.arr2.push(k)
+                    })
+                },
+                moveLeft() {
+                    // console.log(this.cptArr1)
+                    // 保留截取出来的数据
+                    const origin = JSON.parse(JSON.stringify(this.cptArr2))
+                    this.arr2 = this.arr2.filter((k) => {
+                        return k.isChecked === false
+                    })
+
+                    // this.arr2.push(...origin)
+                    origin.forEach(k => {
+                        k.isChecked = false
+                        this.arr1.push(k)
+                    })
+                }
+            }
+        })
         new Vue({
             el: '#app',
+            template: `
+                <Box :data="[arr1, arr2]" />
+            `,
             data: {
                 arr1: [
                     {
@@ -95,47 +154,8 @@
                     }]
             },
             computed: {
-                cptArr1() { // 计算arr1里是否有选中的数据
-                    return this.arr1.filter(k => {
-                        return k.isChecked
-                    })
-                },
-                cptArr2() { // 计算arr2里是否有选中的数据
-                    return this.arr2.filter(k => {
-                        return k.isChecked
-                    })
-                }
-            },
-            methods: {
-                moveRight() {
-                    // console.log(this.cptArr1)
-                    // 保留截取出来的数据
-                    const origin = JSON.parse(JSON.stringify(this.cptArr1))
-
-                    // 获取没有勾上的选项 保留起来
-                    this.arr1 = this.arr1.filter((k) => {
-                        return k.isChecked === false
-                    })
-
-                    // this.arr2.push(...origin)
-                    origin.forEach(k => {
-                        k.isChecked = false
-                        this.arr2.push(k)
-                    })
-                },
-                moveLeft() {
-                    // console.log(this.cptArr1)
-                    // 保留截取出来的数据
-                    const origin = JSON.parse(JSON.stringify(this.cptArr2))
-                    this.arr2 = this.arr2.filter((k) => {
-                        return k.isChecked === false
-                    })
-
-                    // this.arr2.push(...origin)
-                    origin.forEach(k => {
-                        k.isChecked = false
-                        this.arr1.push(k)
-                    })
+                data() {
+                    return [this.arr1, this.arr2]
                 }
             }
         })

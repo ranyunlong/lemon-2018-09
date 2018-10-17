@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>props2</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+
+        // data 选项 props选项 computed选项 methods 选项里的名称都不能同名
+        Vue.component('Test', {
+            props: {
+                data: null
+            },
+            watch: {
+                data(val) {
+                    this.title = val
+                },
+                title(val) {
+                    // console.log('title 发生了变化')
+                    this.$emit('on-change', val)
+                }
+            },
+            data() {
+                return {
+                    title: this.data, //把prop的值赋值给title
+                }
+            },
+            template: `
+                <div @click="change">data:{{data}} title:{{title}}</div>
+            `,
+            methods: {
+                change() {
+                    this.title = 200;
+                }
+            }
+        })
+
+        
+        // 组件接收的props 是单向流数据
+        // 只能使用接收到的props 不能改变父传递过来的props
+        
+
+        // 组件的数据都是私有的
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                data: 100
+            },
+            template: `
+                <div>
+                    实例的data变量值为：{{data}}
+                    <Test :data="data" @on-change="run" />
+                </div>
+            `,
+            methods: {
+                run(val) {
+                    console.log('on-change:', val)
+                    this.data = val
+                }
+            }
+        })
+    </script>
+</body>
+</html>

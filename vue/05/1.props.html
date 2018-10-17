@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父传子</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .card {
+            width: 300px;
+            height: 200px;
+            border: 1px solid #000;
+        }
+        .card header {
+            height: 30px;
+            border-bottom: 1px solid #000;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        // 把组件封装成了一个功能
+        // 组件是一个独立个个体 它不和实例共享数据成员
+        Vue.component('Test', {
+            //props: ['title'], // 在选项props 里声明的名称 可以接受父组件传递过来的参数
+            // 如果想对props 验证类型的话 使用对象作为值
+            props: {
+                title: Boolean,
+                hidden: Boolean,
+                data: Object,
+                size: [Number, String],
+                uc: null, //如果不想验证改数据的类型 使用null
+                test: { // 把验证器改成 对象
+                    // 自定义验证 就是把prop的验证类型改为对象 在对象里写一个validator的函数
+                    validator(val) { // 自定义验证函数名称 接收一个参数val
+                        // 返回true 或 false 来确定是否验证成功
+                        // false 验证失败
+                        // true 验证成功
+                        return val == 1 || val == 2
+                    }
+                }
+            },
+            template: `
+            <h1 
+                v-if="!hidden" 
+                :style="{
+                    fontSize: typeof size === 'number' ? size + 'px' : size
+                }"
+                >
+                {{title}}
+                {{data}}
+                {{uc}}
+            </h1>
+            `
+        })
+
+
+        Vue.component('Card', {
+            props: {
+                // title: { // 验证类型是一个对象
+                //     type: String, // 添加验证类型
+                //     default: '标题' // 如果没有传递参数 使用该值为 默认值
+                // }
+
+                title: {
+                    type: String,
+                    required: true // 当验证类型对象上 有required 且值为true时 该prop 必须传递参数
+                }
+            },
+            template: `
+                <div class="card">
+                    <header>{{title}}</header>
+                </div>
+            `
+        })
+
+
+        // 组件prop 传递的参数 是可以任意 js 的数据类型
+        // Symbol js 里的第七种类型 es6 新增的（就是生成一个唯一的字符串）
+        // 当prop 为布尔值的类型时，如果不使用该prop时 默认为false
+        // 当prop 为布尔值得类型是， 如果使用了该prop 但是没有给prop传递参数 默认为true
+        new Vue({
+            el: '#app',
+            data: {
+                title: false
+            },
+            template: `
+                <div>
+                    <Test 
+                        test="1"
+                        title 
+                        :data="{}" 
+                        :size="'12px'"
+                        :uc="true" />
+                    <Card title="商品栏" />
+
+                    <Card />
+                </div>
+            `
+        })
+
+        // props  第一种是[] 所有的prop 都不验证类型 直接使用（不建议使用的）
+        // props 第二种是{} 所有的prop 都需要验证 如果不需要验证 则当前prop的value 设置为null
+
+        // props 第二种方式的区别 { key: value}
+        // 1. value 可以是 []
+        // 2. value 可以是 js 7中类型的类型 String Boolean Object Array Function 等
+        /** 3. value 可以是对象 对象里有三种属性 
+         * a. type 用来验证js 的基础类型, 也可以是[] 
+         * b. required 用来设置该prop 是否必须验证
+         * c. default 当前prop 如果为空时，使用该值为默认值
+         * d. validator(val) {} 是一个函数 接收一个参数（prop 传递的参数） 返回true 和false 来确认该验证是否成功失败
+         */
+    </script>
+</body>
+</html>

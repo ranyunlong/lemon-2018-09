@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Swicher</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .swicher{
+            width: 44px;
+            height: 20px;
+            background: #ccc;
+            border-radius: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 1px;
+        }
+
+        .swicher.on {
+            background: orangered;
+        }
+        .swicher .btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            background: #fff;
+            transition: transform 0.2s linear;
+        }
+
+        .swicher.on .btn {
+            width: 20px;
+            height: 20px;
+            transform: translateX(24px);
+            border-radius: 10px;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+
+        Vue.component('Swicher', {
+            props: {
+                value: Boolean
+            },
+            watch: {
+                value(val) {
+                    this.iValue = val
+                },
+                iValue(val) {
+                    this.$emit('change', val)
+                }
+            },
+            data() {
+                return {
+                    iValue: this.value
+                }
+            },
+            methods: {
+                toggle() {
+                    this.iValue = !this.iValue
+                }
+            },
+            template: `
+                <div
+                    class="swicher"
+                    @click="toggle"
+                    :class="{
+                        on: iValue
+                    }">
+                    <div class="btn"></div>
+                </div>
+            `
+        })
+
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                v: false
+            },
+            methods: {
+                change(v) {
+                    this.v = v
+                }
+            },
+            template:`
+                <div>
+                    {{v}}
+                    <input type="checkbox" v-model="v" />
+                    <Swicher @change="change" :value="v" />
+
+                    <Swicher @change="change" :value="v" />
+                </div>
+            `
+        })
+    </script>
+</body>
+</html>
