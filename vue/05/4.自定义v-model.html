@@ -40,23 +40,32 @@
 </head>
 <body>
     <div id="app"></div>
+
     <script>
 
+        // prop命名时 可以使用烤串命名法命名 但是在使用的时候要使用小驼峰来获取
+        //  烤串命传递的props 可以使用小驼峰获取也可以使用大驼峰获取
+        
+        // 使用烤串命名传递props 是优先级最高的
+
+        // 大驼峰传递的props 只能使用大驼峰接收
+        // 小驼峰传递的props 只能使用小驼峰接收
         Vue.component('Swicher', {
             props: {
                 value: Boolean
             },
+            inheritAttrs: false, // 就不会继承prop显式 特性 除了class属性和style属性以外
             watch: {
                 value(val) {
                     this.iValue = val
                 },
                 iValue(val) {
-                    this.$emit('change', val)
+                    this.$emit('input', val)
                 }
             },
             data() {
                 return {
-                    iValue: this.value
+                    iValue: this.a
                 }
             },
             methods: {
@@ -79,23 +88,27 @@
         const vm = new Vue({
             el: '#app',
             data: {
-                v: false
+                v: true,
+                text: 'xxx'
             },
             methods: {
                 change(v) {
-                    this.v = v
-                }
+                    console.log(v)
+                },
             },
             template:`
                 <div>
                     {{v}}
                     <input type="checkbox" v-model="v" />
-                    <Swicher @change="change" :value="v" />
-
-                    <Swicher @change="change" :value="v" />
+                    
+                    <Swicher class="any" v-model="v" title="xx" />
                 </div>
             `
         })
+
+        // 使用v-model 这个指令 除了给组件内部传递一个 value的prop以外
+        // 还会给当前这个组件监听一个input事件
+        
     </script>
 </body>
 </html>
