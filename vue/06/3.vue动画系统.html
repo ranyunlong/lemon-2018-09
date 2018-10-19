@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动画</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .box {
+            background: red;
+            width: 300px;
+            height: 300px;
+        }
+
+        .aa-enter /* .fade-leave-active below version 2.1.8 */ {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .aa-enter-active {
+            transition: all 10s linear;  
+            opacity: 1;    
+            width: 300px;
+            height: 300px;   
+        }
+
+        /* .aa-enter-to {
+             
+        } */
+
+        .aa-leave {
+            opacity: 1;   
+            width: 300px;
+            height: 300px; 
+        }
+
+        .aa-leave-active {
+            transition: all 10s linear;   
+            opacity:0;
+            width: 0;
+            height: 0; 
+        }
+        /* .aa-leave-to {
+             
+        } */
+
+        @keyframes fadeEnter {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeEnter {
+            animation: fadeEnter 10s linear;
+        }
+
+
+        @keyframes scaleEnter {
+            from {
+                transform: scale(0,0)
+            }
+            to {
+                transform: scale(1,1)
+            }
+        }
+
+        .scaleEnter {
+            animation: scaleEnter 10s linear;
+        }
+
+
+        @keyframes scaleLeave {
+            from {
+                transform: scale(1,1)
+            }
+            to {
+                transform: scale(0,0)
+            }
+        }
+
+        .scaleLeave {
+            animation: scaleLeave 10s linear;
+        }
+
+        @keyframes fadeLeave {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .fadeLeave {
+            animation: fadeLeave 10s linear;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="show = !show">切换状态</button>
+        
+        <transition
+            //进入之前的样式名称
+            enter-class="" 
+            //进入激活时的样式名称
+            enter-active-class="scaleEnter"
+            //进入动画完成后的样式名称
+            enter-to-class=""
+            //离开前的样式名称
+            leave-class=""
+            //离开激活时的样式名称
+            leave-active-class="scaleLeave"
+            //离开后的样式
+            leave-to-class=""
+            >
+            <div class="box" v-show="show"></div>
+        </transition>
+        
+    </div>
+    <script>
+        // 使用vue 内置的 <transition></transition>
+        // transition 需要和css紧密配合才能实现动画效果
+        // name属性的值将作为 css的前缀名称
+
+        // 必须在要过渡的元素或组件上添加v-if 或 v-show 才能出发动画的过渡
+        new Vue({
+            el: '#app',
+            data: {
+                show: true
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+    <link rel="stylesheet" href="animate.css">
+    <style>
+        .banner{
+            width: 800px;
+            height: 300px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            position: relative;
+            overflow: hidden;
+        }
+        .item {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .item:nth-child(1) {
+            background: red;
+        }
+
+        .item:nth-child(2) {
+            background: blue;
+        }
+
+        .item:nth-child(3) {
+            background: yellow;
+        }
+
+        .animated1 {
+            -webkit-animation-duration: .3s;
+            animation-duration: .3s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="banner">
+            <!-- 上一张的时候
+                slideInRight
+                slideOutLeft
+            -->
+
+            <!-- 下一站的时候
+                slideInLeft
+                slideOutRight
+            -->
+
+            <!-- 
+                transition 的钩子函数
+                // 在入场动画执行之前调用
+                @before-enter=""
+                // 在入场动画执行时调用
+                @enter
+                // 在入场动画执行后调用
+                @after-enter
+                // 在取消入场动画时调用的（就是动画还没有播放完 就切换到其他动画或停止了动画是调用）
+                @enter-cancelled
+
+                // 在离场动画执行之前调用
+                @before-leave=""
+                // 在离场动画执行时调用
+                @leave
+                // 在离场动画执行后调用
+                @after-leave
+                // 在取消离场动画时调用的（就是动画还没有播放完 就切换到其他动画或停止了动画是调用）
+                @leave-cancelled
+             -->
+
+            <transition-group
+                :enter-active-class="enter"
+                :leave-active-class="leave"
+                @after-enter="afterEnter"
+                @after-leave="afterLeave"
+                >
+                <div 
+                    class="item"
+                    :key="index"
+                    v-for="(item, index) in banners"
+                    v-show="showIndex === index"
+                    >
+                    <img :src="item" :a="index">
+                </div>
+            </transition-group>
+        </div>
+        <button @click="prev">上一张</button>
+        <button @click="next">下一张</button>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                banners: [
+                    'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2691817444,1083757481&fm=26&gp=0.jpg',
+                    'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1118565326,2256360130&fm=26&gp=0.jpg',
+                    'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2181994882,3624535159&fm=26&gp=0.jpg'
+                ],
+                showIndex: 0,
+                enter: 'animated1 slideInRight',
+                leave: 'animated1 slideOutLeft',
+                animateState: true  //播放动画的状态 为true允许动画
+            },
+            watch: {
+                showIndex(val) {
+                    if (val > this.banners.length - 1) {
+                        this.showIndex = 0
+                    } else if (val < 0) {
+                        this.showIndex = this.banners.length - 1
+                    }
+                }
+            },
+            methods: {
+                afterEnter() {
+                    //console.log('进入动画结束了')
+                },
+                afterLeave() {
+                    //console.log('离开动画结束了')
+                    this.animateState = true
+                },
+                prev() {
+                    if(!this.animateState) return;
+                    this.showIndex--;
+                    this.enter = 'animated1 slideInRight'
+                    this.leave = 'animated1 slideOutLeft'
+                    this.animateState = false
+                },
+                next() {
+                    if(!this.animateState) return;
+                    this.showIndex++;
+                    this.enter = 'animated1 slideInLeft'
+                    this.leave = 'animated1 slideOutRight'
+                    this.animateState = false
+                }
+            }
+        })
+    </script>
+</body>
+</html>

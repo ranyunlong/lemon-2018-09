@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>插槽</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .card {
+            width: 500px;
+            height: 350px;
+            border: 1px solid #000;
+            border-radius: 15px;
+        }
+
+        .card header {
+            height: 35px;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        Vue.component('Card', {
+            data() {
+                return {
+                    subtitle: 'xxx'
+                }
+            },
+            template: `
+                <div class="card">
+                    <header>
+                        <slot :sub="subtitle" name="header" />
+                    </header>
+                    <main>
+                        <slot name="main" />
+                    </main>
+                </div>
+            `
+        })
+
+        // <slot /> 默认插槽
+        // 组件双标签内的所有东西都会被放到默认插槽里
+
+        // <slot name="" /> 具名插槽
+        // 在组件内定义一个具有名称的插槽
+        // 使用组件是 可以使用slot属性将内容分发到 插槽里
+        // <template slot="header">标题</template>
+        // <h1 slot="header">标题</h1>
+        
+        // 插槽作用域
+        // 在哪里使用就只能用哪里的变量（不是在哪里定义就用哪里的变量）
+
+        // 作用域插槽
+        // 就是把组件内部的变量传递给父组件使用
+        // 在声明插槽时 使用bind 绑定变量 <slot :sub="subtitle" name="header" />
+        // 在使用插槽时 使用 slot-scope 接收变量 slot-scope="{sub}"
+        new Vue({
+            el: '#app',
+            data: {
+                title: '呵呵'
+            },
+            template: `
+                <Card>
+                    <span slot="header" slot-scope="{sub}">{{sub}}</span>
+                    <template slot="main">内容</template>
+                </Card>
+            `
+        })
+    </script>
+</body>
+</html>

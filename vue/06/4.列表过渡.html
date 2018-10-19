@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>列表的过渡</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .item {
+            width: 300px;
+            height: 300px;
+        }
+
+        .item:nth-child(1) {
+            background: red;
+        }
+        .item:nth-child(2) {
+            background: blue;
+        }
+        .item:nth-child(3) {
+            background: orangered;
+        }
+
+        @keyframes scaleEnter {
+            from {
+                transform: scale(0,0)
+            }
+            to {
+                transform: scale(1,1)
+            }
+        }
+
+        .scaleEnter {
+            animation: scaleEnter 0.3s linear;
+        }
+
+
+        @keyframes scaleLeave {
+            from {
+                transform: scale(1,1)
+            }
+            to {
+                transform: scale(0,0)
+            }
+        }
+
+        .scaleLeave {
+            animation: scaleLeave 0.3s linear;
+        }
+
+         @keyframes fadeEnter {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeEnter {
+            animation: fadeEnter 10s linear;
+        }
+
+        @keyframes fadeLeave {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .fadeLeave {
+            animation: fadeLeave 10s linear;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="activeIndex">
+        <br />
+        切换动画类型
+        <input type="text" v-model="enter">
+        <!-- transition-group 在使用的时候必须在循环的列表上绑定一个key key的值必须是唯一的 -->
+        <ul>
+            <transition-group
+                :enter-active-class="enter"
+                :leave-active-class="leave"
+                >
+                <li 
+                    class="item" 
+                    v-for="(item, index) in arr"
+                    :key="index"
+                    v-show="index+1 == activeIndex"
+                    >
+                </li>
+            </transition-group>
+        </ul>
+
+        
+
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                arr: [1,2,3,4],
+                activeIndex: 1,
+                enter: 'scaleEnter',
+                leave: 'scaleLeave'
+            }
+        })
+    </script>
+</body>
+</html>

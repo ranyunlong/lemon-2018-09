@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('TestA', {
+            data() {
+                return {
+                    data: ''
+                }
+            },
+            template:`
+            <div>
+                <span>TestA</span>
+                <input v-model="data" />
+            </div>
+            `
+        })
+
+        Vue.component('TestB', {
+            data() {
+                return {
+                    data: ''
+                }
+            },
+            template:`
+            <div>
+                <span>TestB</span>
+                <input v-model="data" />
+            </div>
+            `
+        })
+
+
+        // component Vue内置的组件
+        // is 接收一个字符串参数 就是已经创建的组件名称
+        // 做选项卡
+        new Vue({
+            el: '#app',
+            data: {
+                tabs: ['TestA', 'TestB'],
+                active: 'TestA'
+            },
+            template: `
+                <div id="app">
+                    <!--给动态组件嵌套keep-alive 缓存解除激活状态的组件-->
+                    <keep-alive> 
+                        <component :is="active" />
+                    </keep-alive>
+                    <button @click="active = compt"  v-for="compt in tabs">
+                        {{compt}}
+                    </button>
+                </div>
+            `
+        })
+    </script>
+</body>
+</html>

@@ -18,9 +18,21 @@
             transition: background 0.5s linear;
         }
 
-        .swicher.on {
-            background: orangered;
+        .swicher.lg {
+            width: 56px;
         }
+
+        .swicher.sm {
+            width: 28px;
+            height: 16px;
+            border-radius: 8.5px;
+        }
+
+        .swicher.on {
+            /* background: orangered; */
+        }
+
+        
         .swicher .btn {
             width: 20px;
             height: 20px;
@@ -29,12 +41,24 @@
             transition: transform 0.2s linear;
         }
 
+        .swicher.sm .btn {
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+        }
+
         .swicher.on .btn {
-            width: 20px;
-            height: 20px;
             transform: translateX(24px);
             border-radius: 10px;
             background: #fff;
+        }
+
+        .swicher.sm.on .btn {
+            transform: translateX(13px);
+        }   
+
+        .swicher.lg.on .btn {
+            transform: translateX(36px);
         }
     </style>
 </head>
@@ -52,7 +76,14 @@
         // 小驼峰传递的props 只能使用小驼峰接收
         Vue.component('Swicher', {
             props: {
-                value: Boolean
+                value: Boolean,
+                // size: String, // large small
+                large: Boolean,
+                small: Boolean,
+                color: {
+                    type: String,
+                    default: 'red'
+                }
             },
             inheritAttrs: false, // 就不会继承prop显式 特性 除了class属性和style属性以外
             watch: {
@@ -77,8 +108,13 @@
                 <div
                     class="swicher"
                     @click="toggle"
+                    :style="{
+                        backgroundColor: iValue ? color : ''
+                    }"
                     :class="{
-                        on: iValue
+                        on: iValue,
+                        lg: large,
+                        sm: small
                     }">
                     <div class="btn"></div>
                 </div>
@@ -101,7 +137,11 @@
                     {{v}}
                     <input type="checkbox" v-model="v" />
                     
-                    <Swicher class="any" v-model="v" title="xx" />
+                    <Swicher large v-model="v" title="xx" />
+                    <Swicher v-model="v" title="xx" />
+                    <Swicher color="blue" small v-model="v" title="xx" />
+
+                    <Swicher size="small" v-model="v" title="xx" />
                 </div>
             `
         })
