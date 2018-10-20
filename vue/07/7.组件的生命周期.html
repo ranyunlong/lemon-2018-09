@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="title">
+        <test-a v-if="show"></test-a>
+        <button @click="show =!show">toggle</button>
+    </div>
+    <script>
+
+        Vue.mixin({
+            beforeCreate() {
+                // 在组件中混入生命周期 是不会被组件里的生命周期覆盖的
+                // mixin的生命周期先运行
+                // 组件的生命周期后运行
+                // 组件创建之前
+                console.log('mixin组件创建之前')
+            },
+        })
+
+        Vue.component('test-a', {
+            template:`
+                <div>test-a</div>
+            `,
+            beforeCreate() {
+                // 组件创建之前
+                console.log('组件创建之前')
+            },
+            created() {
+                // 组件创建好后
+                console.log('组件创建好后')
+            },
+            beforeMount() {
+                // 组件被挂载到dom 之前
+                console.log('组件被挂载到dom')
+            },
+            mounted() {
+                // 知道组件已经被放入到dom了
+                // 如果想要去获取组件的原生元素的高度宽度 html属性时 可以在
+                // mounted钩子里做相关操作
+                // 组件已经在dom中了
+                console.dir(this.$el.clientWidth)
+                console.log('组件已经在dom中了')
+            },
+            beforeUpdate() {
+                // 组件更新之前  
+                // 必须要dom中绑定的数据发生变化之后才会触发更新 
+                console.log('组件更新之前')
+                // 监控模板绑定的相关数据的一个变化
+            },
+            updated() {
+                // 组件更新之后   
+                // 必须要dom中绑定的数据发生变化之后才会触发更新
+                console.log('组件更新之后')
+            },
+            beforeDestroy() {
+                // 组件销毁之前
+                console.log('test-a组件销毁之前')
+            },
+            destroyed() {
+                // 组件销毁之后
+                console.log('test-a组件销毁之后')
+            },
+        })
+
+        // 实例也是有生命周期的
+        const vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    title: 'hehe',
+                    val:'xx',
+                    show: true
+                }
+            },
+            beforeCreate() {
+                // 组件创建之前
+                console.log('组件创建之前')
+            },
+            created() {
+                // 组件创建好后
+                console.log('组件创建好后')
+            },
+            beforeMount() {
+                // 组件被挂载到dom 之前
+                console.log('组件被挂载到dom')
+            },
+            mounted() {
+                // 组件已经在dom中了
+                console.log('组件已经在dom中了')
+            },
+            beforeUpdate() {
+                // 组件更新之前  
+                // 必须要dom中绑定的数据发生变化之后才会触发更新 
+                // console.log('组件更新之前')
+            },
+            updated() {
+                // 组件更新之后   
+                // 必须要dom中绑定的数据发生变化之后才会触发更新
+                // console.log('组件更新之后')
+            },
+            beforeDestroy() {
+                // 组件销毁之前
+                console.log('组件销毁之前')
+            },
+            destroyed() {
+                // 组件销毁之后
+                console.log('组件销毁之后')
+            },
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="input" v-vv />
+        <input type="text" v-focus="input" v-listen:keydown />
+        <div v-listen:click.stop="run">xxx</div>
+        <test-a v-vv></test-a>
+    </div>
+    <script>
+        // 全局指令
+        // Vue.directives('指令名称', {})
+        // 可以在当前页面的任意地方使用
+        Vue.directive('focus', {
+            // 指令钩子函数会被传入以下参数：
+            // 1. el 所绑定的元素
+            bind(el, binding) {
+                // 绑定阶段
+                // 还在绑定阶段，元素还未被插入到dom 所以focus 不生效
+                // el.focus()
+                // console.log(binding)
+                // 把指令绑定给元素 是执行一次的
+                el.value = binding.value
+            },
+            inserted(el, binding, vnode) {
+                // 使用了该指令的元素被插入到dom的阶段
+                // el.focus()
+                // console.log(vnode)
+                // vnode 里有一个context 组件上下文的对象
+                // 在context里可以获取到指令所在的组件的上下文（组件对象）
+                // 指令所属的元素也是只插入一次到dom
+                el.addEventListener('input', ()=>{
+                    // 指令表达式所使用的名称
+                    const vname = binding.expression
+                    // console.log(vnode.context[vname])
+                    vnode.context[vname] = el.value
+                })
+            },
+            update(el, binding) {
+                // console.log(el)
+                // 指令所使用的组件或 参数更新的阶段
+                el.value = binding.value
+            }
+        })
+        
+        Vue.directive('listen', {
+            bind(el, binding) {
+                //console.log(binding)
+                //binding对象
+                // binding对象里的 modifiers 可以拿到指令所使用的修饰符
+                // binding对象里的 arg 可以拿到指令所使用的参数
+                // 事件类型
+                const eventType = binding.arg
+                const handler = binding.value
+                const modifiers = binding.modifiers
+                el.addEventListener(eventType, (e) => {
+                    if (modifiers.stop) {
+                        e.stopPropagation()
+                    }
+                    if (modifiers.prevent) {
+                        e.preventDefault()
+                    }
+                    if (typeof handler === 'function') {
+                        handler(e)
+                    }   
+                })
+            }
+        })
+
+        // 只有当元素存在dom时 行为操作才能生效
+        // const input = document.createElement('input')
+        // input.style.background = 'red'
+
+        // document.body.appendChild(input)
+        // input.focus()
+        Vue.component('test-a', {
+            template: `
+                <div v-bb></div>
+            `,
+            // 局部指令 局部指令只能使用到定义所在位置的模板当做
+            directives: {
+                bb: {
+                    bind(e) {
+                        console.log(e)
+                    }
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                input: '哈哈'
+            },
+            methods: {
+                run() {
+                    console.log('run')
+                }
+            },
+            // 局部指令
+            // 局部指令只能使用在所属的实例或组件上
+            directives: {
+                vv: {
+                    bind(el, binding, vnode){
+                        console.log(el)
+                    },
+                    inserted(){
+
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

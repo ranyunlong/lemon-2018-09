@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>私有组件</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <test></test>
+    </div>
+    <script>
+        // 全局组件的定义方式 意味着在所有地方都能使用这个组件
+        // Vue.component('')
+
+        // 私有组件就是局部组件 只能在某个地方使用
+        // 私有组件就是组件的选项  就是一个对象{}
+
+
+        // 私有组件 有啥用呢？
+        
+
+        // var a = 100
+        // var a = 100
+
+        // 全局组件每一个组件都需要命名
+        // 就类似变量污染 名称是有限的
+
+        // 私有组件就是为了解决这个问题的 组件名称不冲突
+
+        // 在设计组件时 
+        // 1. 使用频率较高的组件 采用全局组件
+        // 2. 使用频率较低的组件 使用局部定义
+        
+        const App = {
+            template: `
+            <div>{{title}}</div>
+            `,
+            data() {
+                return {
+                    title: '标题'
+                }
+            }
+        }
+        
+        const Test = {
+            template: `
+            <div>
+                {{title}}
+                <App />
+            </div>
+            `,
+            components:{
+                App
+            },
+            data() {
+                return {
+                    title: 'test'
+                }
+            }
+        }
+
+        new Vue({
+            el: '#app',
+            // 在组件或实例中添加一个components选项在里面添加 组件对象就可以了
+            components: { 
+                Test
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+
+        <div v-for="item in arr" ref="b1" class="box">
+                box2
+        </div>
+
+        <test-a ref="test"></test-a>
+
+        <button @click="click">获取box元素</button>
+
+    </div>
+    <script>
+        // 使用ref 标记原生元素 得到原生元素
+        // 使用ref 标记组件     得到组件
+
+        // 如果标记的元素使用了循环 那么得到的元素是循环的所有元素 使用的是同一个标记
+        
+        Vue.component('TestA', {
+            data() {
+                return {
+                    title: "xxx"
+                }
+            } ,
+            template: `
+                <div class="test">{{title}}</div>
+            `
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                arr: [1,2,3]
+            },
+            methods: {
+                click() {
+                    const cptTest = this.$refs.test
+                    cptTest.title = '哈哈'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

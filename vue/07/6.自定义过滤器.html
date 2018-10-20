@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{str | name}}
+        {{m | float | currency('$')}}
+    </div>
+    <script>
+        // 全局过滤器
+        // 在实例的任意地方都可以使用        
+        Vue.filter('name', function(val) {
+            return val.replace(/老王|李四/g, '')
+        })
+
+        Vue.filter('currency', function(val, val2) {
+            val2 = val2 || '￥'
+            return val2 + val
+        })
+
+        Vue.filter('float', function(val) {
+            if (typeof val === 'number') {
+                return val.toFixed(2)
+            }
+        })
+        // 局部过滤器
+        new Vue({
+            el: '#app',
+            data: {
+                str: '张三 李四 老王 老王老王老王老王',
+                m: 100.00
+            }
+        })
+    </script>
+</body>
+</html>

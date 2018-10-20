@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>混入</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <test-a></test-a>
+        <test-b></test-b>
+    </div>
+    <script>
+        // vue 全局混入来实现
+        // Vue.mixin(options={})
+        // options可以是vue组件和实例的任意选项
+        
+        Vue.mixin({
+            // 给每一个组件混入一个data选项
+            data() {
+                return {
+                    // 添加一个subtitle的数据
+                    subtitle: 'yyy',
+                    title: 'hehe', // 如果组件里已有这个参数，这个参数将会被组件里的参数覆盖
+                }
+            },
+            methods: {
+                // 如果组件中有这个相同的方法也会被覆盖
+                run() {
+                    alert('run')
+                }
+            }
+        })
+
+        // 局部混入对象
+
+        const mixin = {
+            data() {
+                return {
+                    test: '小明'
+                }
+            }
+        }
+
+        // 全局混入 是你想给所有的组件添加属性或方法或成员 可以使用全局
+        // 局部混入 你只希望某一些组件有这些属性方法或成员 可以使用局部
+
+        // 混入的注意点是 当组件里有的成员和混入的成员冲突时 组件会覆盖混入的内容 除了组件的生命周期钩子
+        // 要注意避免命名冲突
+
+        Vue.component('test-a', {
+            mixins: [mixin], // 局部混入
+            template: `
+                <div @click="run">
+                    <h1>{{title}}</h1>
+                    {{test}}
+                    <span>{{subtitle}}</span>
+                <div>
+            `,
+            data() {
+                return {
+                    title: "test-a"
+                }
+            },
+            methods: {
+                run() {
+                    alert(1)
+                }
+            }
+        })
+
+        Vue.component('test-b', {
+            template: `
+                <div>
+                    <h1>{{title}}</h1>
+                    <span>{{subtitle}}</span>
+                <div>
+            `,
+            data() {
+                return {
+                    title: "test-b"
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+</html>

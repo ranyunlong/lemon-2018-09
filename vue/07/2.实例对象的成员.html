@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>event</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">  
+        <div class="test">test</div>
+        <button @click="click">点击</button>
+        {{title}}
+        <test-a @click="run">
+            testa
+            <test-a>testa-1</test-a>
+            <test-a>testa-2</test-a>
+        </test-a>
+    </div>
+    <script>
+
+        // 组件 或 实例的 $children 属性
+        // $children 是用来获取当前组件里包含的所有子组件
+
+        // $el 获取当前组件的原生dom
+
+        // $options 组件或实例的选项
+
+        // $parent 用来获取父节点或者父组件的
+
+        // $refs 是用来获取使用ref 标记的组件或者原生元素的
+
+        // $root 是用来获取根组件的 也就是实例
+
+        // $vnode虚拟dom
+
+        // $slots 组件的插槽的内容
+
+        // $scopedSlots 作用域插槽的数据
+
+        // $data 实例的data 数据
+
+        // $props 组件用来获取props参数的
+
+        // $emit $set  $mount('#app') 相当于实例的 el选项
+        // $watch 和组件里的watch 功能是一样的用来监听数据的
+        Vue.component('test-a', {
+            props: {
+                data: Array,
+                title: String
+            },
+            template: '<div @click.stop="click"><slot></slot></div>',
+            methods: {
+                click() {
+                    // this.$parent.title = "haha"
+                    console.log(this)
+                }
+            }
+        })
+
+        new Vue({
+            data() {
+                return {
+                    title: 'xxx'
+                }
+            },
+            methods: {
+                click() {
+                    console.log(this)
+                },
+                run() {}
+            }
+        }).$mount('#app')
+    </script>
+</body>
+</html>
