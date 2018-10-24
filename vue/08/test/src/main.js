@@ -7,24 +7,11 @@ import Vue from 'vue'
 
 // 一个.vue后缀的单文件组件 默认是一个对象 其实就是局部私有组件
 import App from './App.vue'
-import Test from './components/Test.vue'
+import Swicher from './components/Swicher'
 
-// 全局组件
-Vue.component('AAA',  {
-  template: `<div>aaa</div>`
-})
-
-// 把局部组件注册为全局组件
-// Vue.component('Test', Test)
+Vue.component('Swicher', Swicher)
 
 
-// Vue的配置属性
-Vue.config.productionTip = false
-
-console.log(App)
-
-
-// 全局注册的组件要写到new Vue 之前
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

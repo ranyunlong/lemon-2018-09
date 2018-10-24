@@ -1,17 +1,17 @@
 <template>
     <div id="app">
-        test
-        <AAA />
-        <Test />
+       <Swicher v-model="on" />
+       <Swicher v-model="on" />
     </div>
 </template>
 
 <script>
-    // 通过导入导出来加载组件
-    import Test from './components/Test.vue'
+    // import Swicher from './components/Swicher'
     export default {
-        components: { // 局部注册该组件
-            Test
+        data() {
+            return {
+                on: true
+            }
         }
     }
 </script>

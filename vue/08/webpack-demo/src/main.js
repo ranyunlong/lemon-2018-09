@@ -1,9 +1,10 @@
 // const test = require('./test.js')
-import Vue from 'vue/dist/vue.esm'
+import Vue from 'vue'
 // import test from './test.js'
-import App from './App.vue'
+import App from './App'
 // css 模块直接这样导出
-import './style.css'
+import './style'
+import './style.less'
 
 new Vue({
     el: '#app',
@@ -12,5 +13,9 @@ new Vue({
         App
     }
 })
+
+export default Vue
+
+export const a = 100
 
 
