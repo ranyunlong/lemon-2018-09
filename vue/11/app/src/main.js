@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 // 导入iview
 import iview from 'iview'
 // 导入iview的样式
@@ -12,15 +13,27 @@ import 'iview/dist/styles/iview.css'
 // 注册iview插件
 Vue.use(iview)
 
-
-
 Vue.config.productionTip = false
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth) {
+    if (store.getters.user) {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
+
 
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
+  router, // 加入路由
+  store,  // 加入vuex
   components: { App },
   template: '<App/>'
 })

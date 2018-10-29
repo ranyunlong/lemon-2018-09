@@ -3,13 +3,13 @@
         <div class="login-box">
             <h2>登录</h2>
             <Form autocomplete="off">
-                <FormItem :error="error.username">
+                <FormItem :error="error.account">
                     <Input 
                         type="text"  
-                        v-model="form.username" 
+                        v-model="form.account" 
                         autocomplete="off" 
                         prefix="md-person" 
-                        @input="error.username=''"
+                        @input="error.account=''"
                         placeholder="请输入用户名" />
                 </FormItem>
 
@@ -33,32 +33,37 @@
 
 <script>
     import axios from 'axios'
+    import { mapMutations } from 'vuex'
     export default {
         data() {
             return {
                 form: {
-                    username: '',
-                    password: ''
+                    account: 'zhangsan',
+                    password: '123456'
                 },
                 error: {
-                    username: '',
+                    account: '',
                     password: ''
                 }
             }
         },
         methods: {
+            ...mapMutations([
+                'CHANGE_USER'
+            ]),
             login() {
-                axios.get('/api/users/login', {
-                    params: this.form
-                }).then(res => {
-                    if (!res.data.code) {
-                        Object.keys(res.data.err).forEach(k => {
-                            this.error[k] = res.data.err[k]
+               axios.post('/api/login', this.form).then(res => {
+                    const { code , err, reulst} = res.data
+                    if (!code) {
+                        Object.keys(err).forEach(k => {
+                            this.error[k] = err[k]
                         })
                     } else {
+                        this.CHANGE_USER(reulst)
                         this.$router.push('/admin')
                     }
-                }).catch(err => {
+
+                }).catch(err =>{
                     console.log(err)
                 })
             }

@@ -1,6 +1,6 @@
 <template>
     <Layout class="page-admin">
-        <PageHeader user="管理员" avatar="https://i.loli.net/2017/08/21/599a521472424.jpg" :dropdown-menu="dropdownMenu" />
+        <PageHeader @click="select" user="管理员" avatar="https://i.loli.net/2017/08/21/599a521472424.jpg" :dropdown-menu="dropdownMenu" />
         <Layout class="content">
             <PageMenu :data="pageMenu" />
             <Content class="router-view">
@@ -13,6 +13,7 @@
 <script>
     import PageHeader from "@/components/page/Header";
     import PageMenu from "@/components/page/Menu";
+    import { mapMutations } from 'vuex' 
     export default {
         data() {
             return {
@@ -54,6 +55,15 @@
         components: {
             PageHeader,
             PageMenu
+        },
+        methods: {
+            ...mapMutations([
+                'LOG_OUT'
+            ]),
+            select() {
+                this.LOG_OUT()
+                this.$router.push('/login')
+            }
         }
     }
 </script>
