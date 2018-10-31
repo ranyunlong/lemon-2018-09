@@ -8,22 +8,50 @@
             <Input suffix="ios-search" size="small" placeholder="搜索点什么" style="width: auto" />
         </div>
         <div class="table">
-            <Table stripe border size="small" :columns="columns" :data="data"></Table>
+            <Table @on-select-all="selectAll" :loading="loading" stripe border size="small" :columns="columns" :data="data"></Table>
         </div>
         <div class="bar">
             <div class="buttons">
                 <Button type="primary">全选</Button>
-                <Button type="error">批量删除</Button>
+                <Button type="error" @click="delectAll">批量删除</Button>
             </div>
-            <Page :total="50" size="small" show-sizer />
+            <Page :current.sync="current" :total="total" size="small" show-sizer />
         </div>
     </div>
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
+    import axios from 'axios'
     export default {
+        created() {
+            this.getUsers({
+                page: this.page,
+                limit: this.limit
+            }).then(res => {
+                const { data, total } = res
+                this.data = data
+                this.total = total
+            })
+        },
+        watch: {
+            current(val) {
+                this.getUsers({
+                    page: this.page,
+                    limit: this.limit
+                }).then(res => {
+                    const { data, total } = res
+                    this.data = data
+                    this.total = total
+                })
+            }
+        },
         data() {
             return {
+                loading: false,
+                total: 0,
+                current: 1,
+                limit: 10,
                 columns: [
                     {
                         type: 'selection',
@@ -51,37 +79,45 @@
                     {
                         title: '地址',
                         align: 'center',
-                        key: 'add'
+                        key: 'address'
                     }
                 ],
-                data: [
-                    {
-                        id: 'a0011',
-                        name: '张三',
-                        age: 50,
-                        add:'北京市'
-                    },
-                    {
-                        id: 'a001',
-                        name: '老王',
-                        age: 50,
-                        add:'北京市'
-                    },
-                    {
-                        id: 'a002',
-                        name: '李四',
-                        age: 40,
-                        add:'北京市'
-                    },
-                     {
-                        id: 'a003',
-                        name: '李四',
-                        age: 30,
-                        add:'北京市'
-                    }
-                ]
+                data: [],
+                deleteAllData: []
             }
         },
+        methods: {
+            delectAll() {
+               const data = this.data.filter(key => {
+                    for (let k of this.deleteAllData) {
+                        return k.id === key.id
+                    }
+                })
+                this.data = data
+            },
+            selectAll(selection) {
+                this.deleteAllData = selection
+            },
+            ...mapActions([
+                'getUsers'
+            ])
+            // getUser() {
+            //     this.loading = true
+            //     axios.get('/api/getmembers', {
+            //         params: {
+            //             page: this.current,
+            //             limit: this.limit
+            //         }
+            //     }).then(res => {
+            //         this.data = res.data.data
+            //         this.total = res.data.total
+            //         this.loading = false
+            //     }).catch(err => {
+            //         console.log(err)
+            //         this.loading = false
+            //     })
+            // }
+        }
     }
 </script>
 

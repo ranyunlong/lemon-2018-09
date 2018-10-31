@@ -24,7 +24,7 @@
                 </FormItem>
 
                 <FormItem>
-                    <Button type="primary" @click="login" long>登录</Button>
+                    <Button type="primary" @click="log" long>登录</Button>
                 </FormItem>
             </Form>
         </div>
@@ -33,7 +33,7 @@
 
 <script>
     import axios from 'axios'
-    import { mapMutations } from 'vuex'
+    import { mapActions } from 'vuex'
     export default {
         data() {
             return {
@@ -48,23 +48,19 @@
             }
         },
         methods: {
-            ...mapMutations([
-                'CHANGE_USER'
+            ...mapActions([
+                'login'
             ]),
-            login() {
-               axios.post('/api/login', this.form).then(res => {
+            log() {
+                this.login(this.form).then(res => {
                     const { code , err, reulst} = res.data
                     if (!code) {
                         Object.keys(err).forEach(k => {
                             this.error[k] = err[k]
                         })
                     } else {
-                        this.CHANGE_USER(reulst)
                         this.$router.push('/admin')
                     }
-
-                }).catch(err =>{
-                    console.log(err)
                 })
             }
         }

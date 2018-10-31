@@ -9,6 +9,8 @@ import iview from 'iview'
 // 导入iview的样式
 import 'iview/dist/styles/iview.css'
 
+console.log(store)
+
 
 // 注册iview插件
 Vue.use(iview)

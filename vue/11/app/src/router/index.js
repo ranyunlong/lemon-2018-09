@@ -5,10 +5,16 @@ import AdminHome from '@/pages/AdminHome'
 import AdminArticleManager from '@/pages/AdminArticleManager'
 import Login from '@/pages/Login'
 import Regsiter from '@/pages/Regsiter'
+import Index from '@/pages/Index'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/',
+      name: 'Index',
+      component: Index
+    },
     {
       path: '/admin',
       component: Admin,
