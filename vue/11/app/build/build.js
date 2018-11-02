@@ -3,17 +3,26 @@ require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
 
+// ora 在控制台里显示loading 进度条的
 const ora = require('ora')
+// 递归删除文件的 删除目录
 const rm = require('rimraf')
 const path = require('path')
+// 控制台高亮显示文字
 const chalk = require('chalk')
+// webpack
 const webpack = require('webpack')
+// 配置文件 公共配置文件
 const config = require('../config')
+// 打包模式的配置文件 prod生产模式
 const webpackConfig = require('./webpack.prod.conf')
 
+// ora 模块
 const spinner = ora('building for production...')
 spinner.start()
 
+
+// 删除掉dist 目录的文件
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
   webpack(webpackConfig, (err, stats) => {

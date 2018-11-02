@@ -7,11 +7,15 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+// 提取css文件 过滤重复的css
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+// 压缩css文件的 
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+// 压缩js文件的
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
+const { BundleAnalyzerPlugin } =  require('webpack-bundle-analyzer')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -32,6 +36,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    // 压缩js代码的插件
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
@@ -115,7 +120,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new BundleAnalyzerPlugin()
   ]
 })
 

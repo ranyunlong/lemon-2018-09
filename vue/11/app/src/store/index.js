@@ -5,6 +5,12 @@ import axios from 'axios'
 import members from './modules/members'
 import users from './modules/users'
 
+let proxyPath = ''
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'developmentdevelopment') {
+    proxyPath = '/api'
+}
+
 // 注册vuex 插件
 
 Vue.use(Vuex)
@@ -40,7 +46,7 @@ export default new Vuex.Store({
     actions: {
         getUsers({ commit }, { page, limit }) {
             return new Promise((resolve, reject) => {
-                axios.get('/api/getmembers', {
+                axios.get(proxyPath+'/getmembers', {
                     params: {
                         page,
                         limit
@@ -58,7 +64,7 @@ export default new Vuex.Store({
         },
         login({ commit }, data) {
             return new Promise((reslove, reject) => {
-                axios.post('/api/login', data).then(res => {
+                axios.post(proxyPath + '/login', data).then(res => {
                     if (res.data.code === 1) {
                        commit('CHANGE_USER',  res.data.reulst) 
                     }

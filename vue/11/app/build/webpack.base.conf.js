@@ -22,6 +22,15 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  // 打包黑名单
+  externals: {
+    // key 模块名称
+    // value 这个模块的全局变量名称
+    'iview': 'iview',
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex'
+  },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
